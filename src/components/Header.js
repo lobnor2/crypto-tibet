@@ -1,75 +1,73 @@
 import {
   AppBar,
   Container,
-  createTheme,
-  makeStyles,
   MenuItem,
   Select,
-  ThemeProvider,
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import {
+  createTheme,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+// import { CryptoState } from "../CryptoContext";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     flex: 1,
+    // border: "1px solid white",
+    color: "white",
     fontWeight: "bold",
     cursor: "pointer",
   },
-
-  icon: {
-    fill: "white",
-  },
-  root: {
-    color: "white",
-  },
 }));
 
-const Header = () => {
-  const classes = useStyles();
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#fff",
+    },
+    type: "dark",
+  },
+});
 
-  // when click on the logo we want to go to home so we r using usehistory form react router dom
-  // history will push that to particular page
+function Header() {
+  const classes = useStyles();
+  // const { currency, setCurrency } = CryptoState();
+
   const history = useHistory();
 
   return (
-    <AppBar color="primary" position="static">
-      <Container>
-        <Toolbar>
-          {/* logo  */}
-          {/* when we click on the crypto tibet it redirect to home page */}
-          <Typography
-            onClick={() => history.push("/")}
-            variant="h5"
-            className={classes.title}
-          >
-            Crypto Tibet
-          </Typography>
-          {/* select components  */}
-          <Select
-            variant="outlined"
-            inputProps={{
-              classes: {
-                icon: classes.icon,
-                root: classes.root,
-              },
-            }}
-            style={{
-              borderColor: "white",
-              width: 100,
-              height: 35,
-              marginLeft: 15,
-            }}
-          >
-            <MenuItem value="USD">USD</MenuItem>
-            <MenuItem value="INR">INR</MenuItem>
-          </Select>
-        </Toolbar>
-      </Container>
-    </AppBar>
+    <ThemeProvider theme={darkTheme}>
+      <AppBar color="transparent" position="static">
+        <Container>
+          <Toolbar>
+            <Typography
+              onClick={() => history.push(`/`)}
+              variant="h6"
+              className={classes.title}
+            >
+              Crypto Tibet
+            </Typography>
+            {/* <Button color="inherit">Login</Button> */}
+            <Select
+              variant="outlined"
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              // value={currency}
+              style={{ width: 100, height: 40, marginLeft: 15 }}
+              // onChange={(e) => setCurrency(e.target.value)}
+            >
+              <MenuItem value={"USD"}>USD</MenuItem>
+              <MenuItem value={"INR"}>INR</MenuItem>
+            </Select>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </ThemeProvider>
   );
-};
+}
 
 export default Header;
