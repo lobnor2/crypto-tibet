@@ -40,7 +40,7 @@ function Header() {
 
   const history = useHistory();
 
-  cosnt { } = CryptoState();
+  const { currency, setCurrency } = CryptoState();
 
   return (
     <ThemeProvider theme={darkTheme}>
