@@ -4,7 +4,6 @@ import Banner from "../components/Banner/Banner";
 const Homepage = () => {
   return (
     <>
-      home page
       <Banner />
     </>
   );
