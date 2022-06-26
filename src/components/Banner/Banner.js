@@ -1,5 +1,6 @@
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import Carousel from "./Carousel";
 
 // dont forget to wrap parenthesis in makesytles
 const useStyles = makeStyles(() => ({
@@ -18,6 +19,13 @@ const useStyles = makeStyles(() => ({
     paddingTop: 25,
     justifyContent: "space-around",
   },
+  //   tagline: {
+  //     display: "flex",
+  //     height: "40%",
+  //     flexDirection: "column",
+  //     justifyContent: "center",
+  //     textAlign: "center",
+  //   },
 }));
 const Banner = () => {
   const classes = useStyles();
@@ -48,6 +56,9 @@ const Banner = () => {
             Get all the Info regarding your favorite Crypto currencies
           </Typography>
         </div>
+
+        {/* carousle imported from banner folder */}
+        <Carousel />
       </Container>
     </div>
   );
