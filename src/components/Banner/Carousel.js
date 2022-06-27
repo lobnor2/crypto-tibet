@@ -3,6 +3,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import AliceCarousel from "react-alice-carousel";
+import { Link } from "react-router-dom";
 import { TrendingCoins } from "../../config/api";
 import { CryptoState } from "../../CryptoContext";
 
@@ -38,6 +39,21 @@ const Carousel = () => {
     // everytime currency changes fetchtrendingcoins will render again coz currency has changed
   }, [currency]);
 
+  // all the items are coming from trending state
+  const items = trending.map((coin) => {
+    return (
+      // link is use to navigate from one page to other
+      <Link className={classes.carouselItem} to={`/coins/${coin.id}`}>
+        <img
+          src={coin?.image}
+          alt={coin.name}
+          height="80"
+          style={{ marginBottom: 10 }}
+        />
+      </Link>
+    );
+  });
+
   const responsive = {
     0: {
       items: 2,
@@ -54,6 +70,7 @@ const Carousel = () => {
         autoPlayInterval={1000}
         animationDuration={1500}
         disableDotsControls
+        // responsive means how many items u want to see at a time
         responsive={responsive}
         autoPlay
         items={items}
