@@ -25,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     border: "1px solid white",
     margin: 2,
-  },
-  textcolor: {
-    color: "white",
+    backgroundColor: "rgba(4,5,6,0.7)",
+    paddingTop: 20,
+    paddingBottom: 20,
   },
 }));
 
@@ -52,7 +52,7 @@ const Carousel = () => {
     setTrending(data);
   };
   //   call fetchtrendingcoins when you first render the component
-  console.log(trending);
+  //   console.log(trending);
   useEffect(() => {
     fetchTrendingCoins();
 
@@ -74,21 +74,29 @@ const Carousel = () => {
           style={{ marginBottom: 10 }}
         />
         {/* symbol of the coin */}
-        <span className={classes.textcolor} style={{ fontSize: 16 }}>
+        <span style={{ fontSize: 16 }}>
           {coin?.symbol}
           {/* nbsp is for giving some space */}
           &nbsp;
           {/* percentage change in the profit or loss */}
-          <span className={classes.textcolor} style={{ fontSize: 16 }}>
+          <span style={{ fontSize: 16, color: profit > 0 ? "green" : "red" }}>
             {profit && "+"}
             {coin?.price_change_percentage_24h?.toFixed(2)}%
           </span>
         </span>
         <span
-          style={{ fontSize: 18, fontWeight: 500 }}
-          className={classes.textcolor}
+          style={{
+            fontSize: 18,
+            fontWeight: 500,
+            marginTop: 7,
+          }}
         >
-          {symbol} {numberWithCommas(coin?.current_price.toFixed(2))}
+          {symbol}
+          {numberWithCommas(
+            coin.current_price < 1000000
+              ? coin.current_price.toFixed(2)
+              : coin.current_price.toFixed(0)
+          )}
         </span>
       </Link>
     );
@@ -113,6 +121,7 @@ const Carousel = () => {
         // responsive means how many items u want to see at a time
         responsive={responsive}
         autoPlay
+        // total items u want to show in carousel
         items={items}
         disableButtonsControls
       />
