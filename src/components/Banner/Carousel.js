@@ -12,17 +12,37 @@ const useStyles = makeStyles((theme) => ({
     height: "50%",
     display: "flex",
     alignItems: "center",
-    border: "1px solid red",
+    border: "1px solid blue",
     // fontSize: 30,
   },
+  carouselItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    cursor: "pointer",
+    textTransform: "uppercase",
+    color: "white",
+    justifyContent: "center",
+    border: "1px solid white",
+    margin: 2,
+  },
+  textcolor: {
+    color: "white",
+  },
 }));
+
+// function to add comma in large numbers
+export function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 const Carousel = () => {
   // initial trending is empty array and settrending in axios part where you will get data
   const [trending, setTrending] = useState([]);
   const classes = useStyles();
 
-  //   get currency from crypto context which is managing global state
-  const { currency } = CryptoState();
+  //   get currency and symbol from crypto context which is managing global state
+  const { currency, symbol } = CryptoState();
 
   // fetch data from api
   const fetchTrendingCoins = async () => {
@@ -41,6 +61,9 @@ const Carousel = () => {
 
   // all the items are coming from trending state
   const items = trending.map((coin) => {
+    // for percentage changes
+    let profit = coin.price_change_percentage_24h >= 0;
+
     return (
       // link is use to navigate from one page to other
       <Link className={classes.carouselItem} to={`/coins/${coin.id}`}>
@@ -50,6 +73,23 @@ const Carousel = () => {
           height="80"
           style={{ marginBottom: 10 }}
         />
+        {/* symbol of the coin */}
+        <span className={classes.textcolor} style={{ fontSize: 16 }}>
+          {coin?.symbol}
+          {/* nbsp is for giving some space */}
+          &nbsp;
+          {/* percentage change in the profit or loss */}
+          <span className={classes.textcolor} style={{ fontSize: 16 }}>
+            {profit && "+"}
+            {coin?.price_change_percentage_24h?.toFixed(2)}%
+          </span>
+        </span>
+        <span
+          style={{ fontSize: 18, fontWeight: 500 }}
+          className={classes.textcolor}
+        >
+          {symbol} {numberWithCommas(coin?.current_price.toFixed(2))}
+        </span>
       </Link>
     );
   });
@@ -74,6 +114,7 @@ const Carousel = () => {
         responsive={responsive}
         autoPlay
         items={items}
+        disableButtonsControls
       />
     </div>
   );
