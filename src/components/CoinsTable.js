@@ -15,12 +15,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { CoinList } from "../config/api";
-import { CryptoState } from "../CryptoContext";
 import { numberWithCommas } from "./Banner/Carousel";
+import { CryptoState } from "../CryptoContext";
 
 // styling for textfield
 const useStyles = makeStyles(() => ({
   floatingLabelFocusStyle: { color: "#fff" },
+  row: {
+    backgroundColor: "#16171a",
+    cursor: "pointer",
+
+    "&:hover": {
+      backgroundColor: "rgba(50,50,50,0.6)",
+    },
+  },
 }));
 // we are using coin list api from api.js
 const CoinsTable = () => {
@@ -28,7 +36,6 @@ const CoinsTable = () => {
 
   // coins contains all of our coins from coinlist api from api.js and empty array initailly
   const [coins, setCoins] = useState([]);
-  // initally loading is false
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const history = useHistory();
@@ -121,25 +128,31 @@ const CoinsTable = () => {
                       scope="row"
                       style={{
                         display: "flex",
+                        alignItems: "center",
+                        // justifyContent: "center",
                         gap: 15,
                         // border: "1px solid white",
-                        marginBottom: 5,
+                        // for aligning same line
+                        marginBottom: -1,
                       }}
                     >
                       {/* for coin image */}
                       <img
                         src={row?.image}
                         alt={row.name}
-                        height="50"
-                        style={{
-                          marginBottom: 10,
-                          // border: "1px solid white"
-                        }}
+                        height="45"
+                        style={
+                          {
+                            //   marginBottom: 10,
+                            //   border: "1px solid white",
+                          }
+                        }
                       />
                       <div
                         style={{
                           display: "flex",
                           flexDirection: "column",
+
                           //   border: "1px solid white",
                         }}
                       >
