@@ -17,6 +17,7 @@ import { useHistory } from "react-router-dom";
 import { CoinList } from "../config/api";
 import { numberWithCommas } from "./Banner/Carousel";
 import { CryptoState } from "../CryptoContext";
+import { Pagination } from "@material-ui/lab";
 
 // styling for textfield
 const useStyles = makeStyles(() => ({
@@ -29,6 +30,11 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "rgba(50,50,50,0.6)",
     },
   },
+  pagination: {
+    "& .MuiPaginationItem-root": {
+      color: "white",
+    },
+  },
 }));
 // we are using coin list api from api.js
 const CoinsTable = () => {
@@ -38,6 +44,7 @@ const CoinsTable = () => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const history = useHistory();
   const { currency, symbol } = CryptoState();
 
@@ -113,101 +120,119 @@ const CoinsTable = () => {
             </TableHead>
             {/* handleSearch returns us array of filtered coins and if we dont type any in seach box it will show all of the coins */}
             <TableBody>
-              {handleSearch().map((row) => {
-                const profit = row.price_change_percentage_24h > 0;
+              {/* will display only 10 items coz of slice */}
+              {handleSearch()
+                .slice((page - 1) * 10, (page - 1) * 10 + 10)
+                .map((row) => {
+                  const profit = row.price_change_percentage_24h > 0;
 
-                return (
-                  // if we click on any of this row this should take us to that particular coin page
-                  <TableRow
-                    onClick={() => history.push(`/coins/${row.id}`)}
-                    className={classes.row}
-                    key={row.name}
-                  >
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        // justifyContent: "center",
-                        gap: 15,
-                        // border: "1px solid white",
-                        // for aligning same line
-                        marginBottom: -1,
-                      }}
+                  return (
+                    // if we click on any of this row this should take us to that particular coin page
+                    <TableRow
+                      onClick={() => history.push(`/coins/${row.id}`)}
+                      className={classes.row}
+                      key={row.name}
                     >
-                      {/* for coin image */}
-                      <img
-                        src={row?.image}
-                        alt={row.name}
-                        height="45"
-                        style={
-                          {
-                            //   marginBottom: 10,
-                            //   border: "1px solid white",
-                          }
-                        }
-                      />
-                      <div
+                      <TableCell
+                        component="th"
+                        scope="row"
                         style={{
                           display: "flex",
-                          flexDirection: "column",
-
-                          //   border: "1px solid white",
+                          alignItems: "center",
+                          // justifyContent: "center",
+                          gap: 15,
+                          // border: "1px solid white",
+                          // for aligning same line
+                          marginBottom: -1,
                         }}
                       >
-                        {/* for coin symbol */}
-                        <span
+                        {/* for coin image */}
+                        <img
+                          src={row?.image}
+                          alt={row.name}
+                          height="45"
+                          style={
+                            {
+                              //   marginBottom: 10,
+                              //   border: "1px solid white",
+                            }
+                          }
+                        />
+                        <div
                           style={{
-                            textTransform: "uppercase",
-                            fontSize: 20,
-                            color: "white",
+                            display: "flex",
+                            flexDirection: "column",
+
+                            //   border: "1px solid white",
                           }}
                         >
-                          {row.symbol}
+                          {/* for coin symbol */}
+                          <span
+                            style={{
+                              textTransform: "uppercase",
+                              fontSize: 20,
+                              color: "white",
+                            }}
+                          >
+                            {row.symbol}
+                          </span>
+                          {/* for coin name */}
+                          <span style={{ color: "darkgrey" }}>{row.name}</span>
+                        </div>
+                      </TableCell>
+
+                      {/* for coin price */}
+                      <TableCell align="right">
+                        <span style={{ color: "white", fontSize: "18px" }}>
+                          {symbol}
+                          {numberWithCommas(row.current_price.toFixed(2))}
                         </span>
-                        {/* for coin name */}
-                        <span style={{ color: "darkgrey" }}>{row.name}</span>
-                      </div>
-                    </TableCell>
+                      </TableCell>
 
-                    {/* for coin price */}
-                    <TableCell align="right">
-                      <span style={{ color: "white", fontSize: "18px" }}>
+                      {/* for 24h change */}
+                      <TableCell
+                        align="right"
+                        style={{
+                          // if profit is greater than 0 show green and else red
+                          color: profit > 0 ? "rgb(14,203,129" : "red",
+                          fontWeight: 500,
+                          fontSize: "18px",
+                        }}
+                      >
+                        {profit && "+"}
+                        {row.price_change_percentage_24h.toFixed(2)}%
+                      </TableCell>
+
+                      {/* for market cap */}
+                      <TableCell
+                        align="right"
+                        style={{ color: "white", fontSize: "18px" }}
+                      >
                         {symbol}
-                        {numberWithCommas(row.current_price.toFixed(2))}
-                      </span>
-                    </TableCell>
-
-                    {/* for 24h change */}
-                    <TableCell
-                      align="right"
-                      style={{
-                        // if profit is greater than 0 show green and else red
-                        color: profit > 0 ? "rgb(14,203,129" : "red",
-                        fontWeight: 500,
-                        fontSize: "18px",
-                      }}
-                    >
-                      {profit && "+"}
-                      {row.price_change_percentage_24h.toFixed(2)}%
-                    </TableCell>
-
-                    {/* for market cap */}
-                    <TableCell
-                      align="right"
-                      style={{ color: "white", fontSize: "18px" }}
-                    >
-                      {symbol}
-                      {numberWithCommas(row.market_cap)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        {numberWithCommas(row.market_cap)}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         )}
       </TableContainer>
+      <Pagination
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          color: "#fff",
+          padding: 20,
+          width: "100%",
+        }}
+        classes={{ ul: classes.pagination }}
+        count={(handleSearch()?.length / 10).toFixed(0)}
+        onChange={(_, value) => {
+          setPage(value);
+          window.scroll(0, 450);
+        }}
+      />
     </Container>
   );
 };

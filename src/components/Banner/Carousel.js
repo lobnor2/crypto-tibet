@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
     height: "50%",
     display: "flex",
     alignItems: "center",
-    border: "1px solid blue",
+    // border: "1px solid blue",
     // fontSize: 30,
   },
   carouselItem: {

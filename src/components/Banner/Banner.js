@@ -5,7 +5,7 @@ import Carousel from "./Carousel";
 // dont forget to wrap parenthesis in makesytles
 const useStyles = makeStyles(() => ({
   banner: {
-    border: "1px solid red",
+    // border: "1px solid red",
     // minHeight: "80vh",
     backgroundImage: "url(./blacksand.jpeg)",
     // backgroundPosition: "center",
