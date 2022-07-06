@@ -41,12 +41,14 @@ const Coinpage = () => {
       [theme.breakpoints.down("md")]: {
         width: "100%",
       },
+
       display: "flex",
       flexDirection: "center",
       aligntItems: "center",
       marginTop: 25,
       borderRight: "2px soid grey",
     },
+
     heading: {
       fontWeight: "bold",
       marginBottom: 20,
@@ -75,6 +77,7 @@ const Coinpage = () => {
         <Typography variant="h3" className={classes.heading}>
           {coin?.name}
         </Typography>
+
         {/* for descriptions */}
         <Typography>
           {ReactHtmlParser(coin?.description.en.split(". ")[0])}
