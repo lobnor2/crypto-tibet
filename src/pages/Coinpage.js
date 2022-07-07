@@ -104,10 +104,14 @@ const Coinpage = () => {
           </span>
           <span style={{ display: "flex" }}>
             <Typography variant="h4" className={classes.heading}>
-              Rank:
+              Market Cap:{" "}
             </Typography>
             &nbsp; &nbsp;
-            <Typography variant="h5">{coin?.market_cap_rank}</Typography>
+            <Typography variant="h5">
+              {symbol}{" "}
+              {coin?.market_cap[currency.toLowerCase()].toString().slice(0, -6)}
+              M
+            </Typography>
           </span>
         </div>
       </div>
