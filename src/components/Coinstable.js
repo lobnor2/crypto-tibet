@@ -88,9 +88,23 @@ const Coinstable = () => {
             <LinearProgress style={{ backgroundColor: "gold" }} />
           ) : (
             <Table>
-              <TableHead style={{ backgroundColor: "#EEBC1D" }}>
+              <TableHead
+                style={{ backgroundColor: "#EEBC1D", fontWeight: "bold" }}
+              >
                 <TableRow>
-                  {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
+                  {[
+                    "Coin",
+                    "Current Price",
+                    "24h Change",
+                    "Market Cap",
+                    "Volume",
+                    "High24h",
+                    "Low24h",
+                    "Price change 24h",
+                    "Circulating Supply",
+                    "Max Supply",
+                    "ATH",
+                  ].map((head) => (
                     <TableCell
                       style={{ color: "black", fontWeight: "500" }}
                       key={head}
@@ -132,9 +146,13 @@ const Coinstable = () => {
                           <div>{row.name}</div>
                         </span>
                       </TableCell>
-                      <TableCell align="right">
-                        {symbol}{" "}
-                        {numberWithCommas(row.current_price.toFixed(2))}
+                      <TableCell align="right" style={{ width: "6ch" }}>
+                        {symbol}
+                        {numberWithCommas(
+                          row.current_price > 1000
+                            ? row.current_price.toFixed(0)
+                            : row.current_price.toFixed(2)
+                        )}
                       </TableCell>
                       <TableCell
                         align="right"
@@ -147,11 +165,61 @@ const Coinstable = () => {
                         {row.price_change_percentage_24h.toFixed(2)}%
                       </TableCell>
                       <TableCell align="right">
-                        {symbol}{" "}
+                        {symbol}
+                        {row.market_cap.toString().slice(0, -9) >= 1
+                          ? row.market_cap.toString().slice(0, -9) + "B"
+                          : row.market_cap.toString().slice(0, -6) + "M"}
+                      </TableCell>
+                      <TableCell align="right">
+                        {symbol}
+                        {row.total_volume.toString().slice(0, -9) >= 1
+                          ? row.total_volume.toString().slice(0, -9) + "B"
+                          : row.total_volume.toString().slice(0, -6) + "M"}
+                      </TableCell>
+                      <TableCell align="right">
+                        {symbol}
                         {numberWithCommas(
-                          row.market_cap.toString().slice(0, -6)
+                          row.high_24h > 1000
+                            ? row.high_24h.toFixed(0)
+                            : row.high_24h.toFixed(2)
                         )}
-                        M
+                      </TableCell>
+
+                      <TableCell align="right">
+                        {symbol}
+                        {numberWithCommas(
+                          row.low_24h > 1000
+                            ? row.low_24h.toFixed(0)
+                            : row.low_24h.toFixed(2)
+                        )}
+                      </TableCell>
+                      <TableCell align="right">
+                        {symbol}
+                        {row.price_change_24h == "0"
+                          ? "Unch"
+                          : row.price_change_24h.toFixed(2)}
+                      </TableCell>
+                      <TableCell align="right">
+                        {/* {row.circulating_supply / (1000000).toFixed(2)} */}
+                        {/* {row.circulating_supply >= 1000} */}
+                        {(row.circulating_supply / 1000000).toFixed(2) >= 1000
+                          ? (row.circulating_supply / 1000000000).toFixed(2) +
+                            "B"
+                          : (row.circulating_supply / 1000000).toFixed(2) + "M"}
+                      </TableCell>
+
+                      <TableCell align="right">
+                        {row?.max_supply
+                          ? row.max_supply / 1000000 >= 1000
+                            ? (row.max_supply / 1000000000).toFixed(2) + "B"
+                            : (row.max_supply / 1000000).toFixed(2) + "M"
+                          : // row.max_supply / 1000000 + "M"
+                            // ( (row.max_supply>=1000?(row.max_supply/1000000000) + "B":(row.max_supply/1000000) + "M")
+                            "Infinite Supply"}
+                      </TableCell>
+                      <TableCell align="right">
+                        {symbol}
+                        {row.ath}
                       </TableCell>
                     </TableRow>
                   );

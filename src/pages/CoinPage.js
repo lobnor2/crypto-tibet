@@ -9,6 +9,14 @@ import CoinInfo from "../components/CoinInfo";
 import { SingleCoin } from "../config/api";
 import { CryptoState } from "../CryptoContext";
 import "./CoinPage.css";
+// import parse from "html-react-parser";
+
+// import ReactHtmlParser from "react-html-parser";
+// import ReactHtmlParser, {
+//   processNodes,
+//   convertNodeToElement,
+//   htmlparser2,
+// } from "react-html-parser";
 
 const CoinPage = () => {
   const { id } = useParams();
@@ -48,6 +56,7 @@ const CoinPage = () => {
         <Typography variant="h3" className="coinpage_heading">
           {coin?.name}
         </Typography>
+        <div className="coinpage_description">{coin?.description.en}</div>
       </div>
       {/* chart */}
       <CoinInfo coin={coin} />

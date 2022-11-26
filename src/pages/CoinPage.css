@@ -1,6 +1,7 @@
 .coinpage {
   /* background-color: rgb(54, 82, 73); */
   border: 1px solid red;
+  padding: 10px;
 }
 
 .coinpage_sidebar {
@@ -10,4 +11,9 @@
   align-items: center;
   margin-top: 20px;
   border: 1px solid green;
+  margin-bottom: 40px;
+}
+
+.coinpage_description {
+  /* text-align: justify; */
 }
