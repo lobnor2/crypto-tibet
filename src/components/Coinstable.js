@@ -88,9 +88,7 @@ const Coinstable = () => {
             <LinearProgress style={{ backgroundColor: "gold" }} />
           ) : (
             <Table>
-              <TableHead
-                style={{ backgroundColor: "#EEBC1D", fontWeight: "bold" }}
-              >
+              <TableHead style={{ backgroundColor: "#EEBC1D" }}>
                 <TableRow>
                   {[
                     "Coin",
@@ -106,7 +104,7 @@ const Coinstable = () => {
                     "ATH",
                   ].map((head) => (
                     <TableCell
-                      style={{ color: "black", fontWeight: "500" }}
+                      style={{ color: "black", fontWeight: "400" }}
                       key={head}
                       align={head === "Coin" ? "" : "right"}
                     >
@@ -130,9 +128,9 @@ const Coinstable = () => {
                         style={{
                           display: "flex",
                           //   flexDirection: "row",
-                          //   alignItems: "center",
-                          //   justifyContent: "center",
-                          gap: 15,
+                          alignItems: "center",
+                          // justifyContent: "flexstart",
+                          gap: 10,
                         }}
                       >
                         <img
@@ -200,8 +198,6 @@ const Coinstable = () => {
                           : row.price_change_24h.toFixed(2)}
                       </TableCell>
                       <TableCell align="right">
-                        {/* {row.circulating_supply / (1000000).toFixed(2)} */}
-                        {/* {row.circulating_supply >= 1000} */}
                         {(row.circulating_supply / 1000000).toFixed(2) >= 1000
                           ? (row.circulating_supply / 1000000000).toFixed(2) +
                             "B"
@@ -213,9 +209,7 @@ const Coinstable = () => {
                           ? row.max_supply / 1000000 >= 1000
                             ? (row.max_supply / 1000000000).toFixed(2) + "B"
                             : (row.max_supply / 1000000).toFixed(2) + "M"
-                          : // row.max_supply / 1000000 + "M"
-                            // ( (row.max_supply>=1000?(row.max_supply/1000000000) + "B":(row.max_supply/1000000) + "M")
-                            "Infinite Supply"}
+                          : "Infinite Supply"}
                       </TableCell>
                       <TableCell align="right">
                         {symbol}
