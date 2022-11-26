@@ -160,7 +160,6 @@ const Coinstable = () => {
             </Table>
           )}
         </TableContainer>
-        <h2>hello this is heading 2</h2>
       </Container>
     </ThemeProvider>
   );

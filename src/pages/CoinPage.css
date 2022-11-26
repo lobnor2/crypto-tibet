@@ -1,0 +1,13 @@
+.coinpage {
+  /* background-color: rgb(54, 82, 73); */
+  border: 1px solid red;
+}
+
+.coinpage_sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  border: 1px solid green;
+}
