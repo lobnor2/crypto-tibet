@@ -13,12 +13,9 @@ import {
   ThemeProvider,
   Typography,
 } from "@material-ui/core";
-import axios from "axios";
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CoinList } from "../config/api";
 import { CryptoState } from "../CryptoContext";
 import { numberWithCommas } from "./Banner/Carousel";
 
@@ -33,20 +30,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Coinstable = () => {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, coins, loading, fetchCoins } = CryptoState();
 
   const navigate = useNavigate();
   const classes = useStyles();
-
-  const fetchCoins = async () => {
-    setLoading(true);
-    const { data } = await axios.get(CoinList(currency));
-    setCoins(data);
-    setLoading(false);
-  };
 
   useEffect(() => {
     fetchCoins();
