@@ -1,12 +1,14 @@
-import { LinearProgress, Typography } from "@material-ui/core";
+import { Button, LinearProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { numberWithCommas } from "../components/Banner/Carousel";
 import CoinInfo from "../components/CoinInfo";
+import { db } from "../components/firebase";
 import { SingleCoin } from "../config/api";
 import { CryptoState } from "../CryptoContext";
 import "./CoinPage.css";
@@ -14,8 +16,9 @@ import "./CoinPage.css";
 const CoinPage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
+  const navigate = useNavigate();
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -36,6 +39,16 @@ const CoinPage = () => {
     // },
   }));
   const classes = useStyles();
+
+  const addToWatchlist = async () => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      await setDoc(coinRef, {
+        coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+      });
+    } catch (error) {}
+  };
 
   if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
 
@@ -88,10 +101,32 @@ const CoinPage = () => {
               M
             </Typography>
           </div>
+          {user && (
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: "#EEcb1D",
+                width: "100%",
+                height: 40,
+                marginTop: 20,
+              }}
+              onClick={addToWatchlist}
+            >
+              Add to Watchlist
+            </Button>
+          )}
         </div>
+
+        {/* <Button
+          variant="contained"
+          style={{ backgroundColor: "#EEcb1D" }}
+          // onClick={navigate("/")}
+        >
+          Go Home
+        </Button> */}
       </div>
       {/* chart */}
-      <CoinInfo coin={coin} />
+      {/* <CoinInfo coin={coin} /> */}
     </div>
   );
 };
