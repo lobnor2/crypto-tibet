@@ -18,7 +18,7 @@ const CoinPage = () => {
   const [coin, setCoin] = useState();
   const navigate = useNavigate();
 
-  const { currency, symbol, user } = CryptoState();
+  const { currency, symbol, user, watchlist, setAlert } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -46,6 +46,11 @@ const CoinPage = () => {
     try {
       await setDoc(coinRef, {
         coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+      });
+      setAlert({
+        open: true,
+        message: `${coin.name} Added to the watchlist Successful`,
+        type: "success",
       });
     } catch (error) {}
   };
