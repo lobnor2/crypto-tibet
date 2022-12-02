@@ -3,13 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { AppBar, Box, Button, Tab, Tabs } from "@material-ui/core";
+import { AppBar, Button, Tab, Tabs } from "@material-ui/core";
 import Login from "./Login";
 import Signup from "./Signup";
-import GoogleButton from "react-google-button";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "../firebase";
-import { CryptoState } from "../../CryptoContext";
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -22,16 +18,6 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     borderRaduis: 10,
   },
-  google: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 20,
-    padding: 24,
-  },
-  google_span: {
-    marginTop: -20,
-  },
 }));
 
 export default function AuthModal() {
@@ -39,7 +25,6 @@ export default function AuthModal() {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
 
-  const { setAlert } = CryptoState();
   const handleOpen = () => {
     setOpen(true);
   };
@@ -49,27 +34,6 @@ export default function AuthModal() {
   };
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  //   google authentication
-  const googleProvider = new GoogleAuthProvider();
-  const signInWithGoogle = () => {
-    signInWithPopup(auth, googleProvider)
-      .then((res) => {
-        setAlert({
-          open: true,
-          message: `Sign Up Successful. Welcome ${res.user.email}`,
-        });
-        handleClose();
-      })
-      .catch((error) => {
-        setAlert({
-          open: true,
-          message: error.message,
-          type: "error",
-        });
-        return;
-      });
   };
 
   return (
@@ -116,14 +80,6 @@ export default function AuthModal() {
             </AppBar>
             {value === 0 && <Login handleClose={handleClose} />}
             {value === 1 && <Signup handleClose={handleClose} />}
-
-            <Box className={classes.google}>
-              <span className={classes.google_span}>OR</span>
-              <GoogleButton
-                style={{ width: "100%", outline: "none" }}
-                onClick={signInWithGoogle}
-              />
-            </Box>
           </div>
         </Fade>
       </Modal>
